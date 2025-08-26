@@ -20,7 +20,7 @@ export default function Navbar() {
                 <Link href="/exposiciones" className="text-gray-700 hover:text-gray-900 transition-colors">Exposiciones</Link>
                 <Link href="/blog" className="text-gray-700 hover:text-gray-900 transition-colors">Blog</Link>
                 <Link href="/contacto" className="text-gray-700 hover:text-gray-900 transition-colors">Contacto</Link>
-                <Button variant="outline">Donar</Button>
+                <Button variant="outline" size="sm">Donar</Button>
             </div>
             {/* Botón para abrir el menú móvil */}
             <div className="md:hidden pl-2">
