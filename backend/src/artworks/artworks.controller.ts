@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ArtworksService } from './artworks.service';
 
 @Controller('artworks')
-export class ArtwarksController {
+export class ArtworksController {
   constructor(private readonly artworksService: ArtworksService) {}
 
   @Get()
