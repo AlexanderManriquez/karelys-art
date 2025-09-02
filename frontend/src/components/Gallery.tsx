@@ -12,17 +12,26 @@ interface GalleryProps {
 
 export function Gallery({ artworks, limit }: GalleryProps) {
   const items = limit ? artworks.slice(0, limit) : artworks;
+  console.log(artworks);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
       {items.map((artwork) => (
         <Card key={artwork.id} className="rounded-2xl shadow-lg overflow-hidden">
           <CardContent className="p-0">
-            <Image 
-              src={artwork.image_url}
-              alt={artwork.title}
-              className="w-full h-48 object-cover"
-            />  
+            {artwork.imageurl ? (
+              <Image
+                src={artwork.imageurl}
+                alt={artwork.title || "Artwork"}
+                width={400}
+                height={300}
+                className="w-full h-48 object-cover"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                No image
+              </div>
+            )} 
             <div className="p-4">
               <h2 className="font-semibold text-lg mb-2">{artwork.title}</h2>
               {artwork.description && (

@@ -1,6 +1,6 @@
 export interface Artwork {
   id: number;
   title: string;
-  image_url: string;
+  imageurl: string;
   description?: string;
 }
