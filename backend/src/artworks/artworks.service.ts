@@ -1,5 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { CreateArtworkDto } from './dto/create-artwork.dto';
+import { single } from 'rxjs/internal/operators/single';
 
 @Injectable()
 export class ArtworksService {
@@ -12,18 +14,17 @@ export class ArtworksService {
     return data;
   }
 
-  async createArtwork(
-    title: string,
-    price: number,
-    imageUrl: string,
-    description?: string,
-  ) {
+  async createArtwork(CreateArtworkDto: CreateArtworkDto) {
     const { data, error } = await this.supabase
       .from('Artwork')
-      .insert([{ title, price, imageUrl, description }])
-      .select();
-    if (error) throw error;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return data[0];
+      .insert([CreateArtworkDto])
+      .select()
+      .single();
+    if (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error.message);
+    }
+
+    return data;
   }
 }

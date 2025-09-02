@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ArtworksService } from './artworks.service';
+import { CreateArtworkDto } from './dto/create-artwork.dto';
 
 @Controller('artworks')
 export class ArtworksController {
@@ -11,22 +12,7 @@ export class ArtworksController {
   }
 
   @Post()
-  async create(
-    @Body()
-    body: {
-      title: string;
-      price: number;
-      imageUrl: string;
-      description?: string;
-    },
-  ) {
-    const { title, price, imageUrl, description } = body;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.artworksService.createArtwork(
-      title,
-      price,
-      imageUrl,
-      description,
-    );
+  async create(@Body() CreateArtworkDto: CreateArtworkDto) {
+    return this.artworksService.createArtwork(CreateArtworkDto);
   }
 }
