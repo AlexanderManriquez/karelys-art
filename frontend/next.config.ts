@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['i.pinimg.com', 'images.unsplash.com', 'tu-dominio.com'], // agregar todos los dominios de las imágenes
+    domains: ['i.pinimg.com', 'cdn.pixabay.com'], // agregar todos los dominios de las imágenes
   },
 };
 

@@ -16,7 +16,7 @@ export default function Navbar() {
             <Link href="/" className="text-2xl font-bold text-amber-500 pl-2">Karelys ART.</Link>
             <div className="space-x-6 hidden md:flex items-center pl-2">
                 <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors">Inicio</Link>
-                <Link href="/galeria" className="text-gray-700 hover:text-gray-900 transition-colors">Galería</Link>
+                <Link href="/gallery" className="text-gray-700 hover:text-gray-900 transition-colors">Galería</Link>
                 <Link href="/exposiciones" className="text-gray-700 hover:text-gray-900 transition-colors">Exposiciones</Link>
                 <Link href="/blog" className="text-gray-700 hover:text-gray-900 transition-colors">Blog</Link>
                 <Link href="/contacto" className="text-gray-700 hover:text-gray-900 transition-colors">Contacto</Link>
