@@ -11,12 +11,12 @@ El proyecto se plantea como **ejemplo de aplicación full-stack profesional**, m
 
 - **Frontend**: Next.js 14 (React, SSR/SSG, App Router) + TailwindCSS + shadcn/ui
 - **Backend**: NestJS (API REST modular) + Express
-- **Base de Datos**: PostgreSQL (via Supabase / Neon) + Prisma ORM
+- **Base de Datos**: PostgreSQL (via Supabase)
 - **Autenticación**: JWT con refresh tokens / NextAuth
 - **Infraestructura**:
   - Vercel (Frontend)
   - Render / Railway (Backend)
-  - Supabase / Neon (DB)
+  - Supabase (DB)
 - **Media Storage**: Cloudinary / Next Image Optimization
 - **CI/CD**: GitHub Actions
 - **Testing**: Jest (unit) + Cypress (end-to-end)
@@ -65,14 +65,13 @@ El proyecto se plantea como **ejemplo de aplicación full-stack profesional**, m
 - [x] 📄 Documentación de API con **Swagger**
 
 ### 🗄️ Base de Datos
-- [x] 💾 Modelado de entidades: `User`, `Artwork`, `Exhibition`, `BlogPost`
-- [x] 🔄 Migraciones con **Prisma**
+- [x] 💾 Modelado de entidades: `User`, `Artwork`, `Order`, `Comment`
 - [x] 🔗 Relaciones entre tablas (ej: obras ↔ exposiciones)
 
 ### ⚙️ DevOps & Infra
 - [x] ☁️ Frontend desplegado en **Vercel**
 - [x] 🔧 Backend en **Render / Railway**
-- [x] 🗃 PostgreSQL en **Supabase / Neon**
+- [x] 🗃 PostgreSQL en **Supabase**
 - [x] 🖼 Almacenamiento de imágenes en **Cloudinary**
 - [x] 🔄 CI/CD con **GitHub Actions**
 
