@@ -23,9 +23,9 @@ export function Gallery({ artworks, limit }: GalleryProps) {
               <Image
                 src={artwork.imageurl}
                 alt={artwork.title || "Artwork"}
-                width={400}
-                height={300}
-                className="w-full h-48 object-cover"
+                width={300}
+                height={500}
+                className="w-full h-64 object-cover p-1"
               />
             ) : (
               <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
