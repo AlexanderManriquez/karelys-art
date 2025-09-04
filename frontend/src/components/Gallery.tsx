@@ -1,12 +1,13 @@
 "use client";
 
-
+import { Database } from "@/database.types";
 import { Card, CardContent } from "../components/ui/card";
-import { Artwork } from "@/types/artwork";
 import Image from "next/image";
 
+type ArtworkRow = Database["public"]["Tables"]["Artwork"]["Row"];
+
 interface GalleryProps {
-    artworks: Artwork[];
+    artworks: ArtworkRow[];
     limit?: number;
 }
 

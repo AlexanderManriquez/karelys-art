@@ -1,13 +1,6 @@
 import { Gallery } from "@/components/Gallery";
 import Navbar from "@/components/Navbar";
-import { Artwork } from "@/types/artwork";
-
-async function fetchArtworks(): Promise<Artwork[]> {
-  const res = await fetch('http://localhost:3000/artworks', {
-    cache: 'no-store',
-  });
-  return res.json();
-}
+import { fetchArtworks } from "@/lib/fetchArtworks";
 
 export default async function GalleryPage() {
   const artworks = await fetchArtworks();
