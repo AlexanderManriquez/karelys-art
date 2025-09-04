@@ -1,30 +1,39 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from 'src/database.types';
+import { CreateUserDto } from './dto/create-user.dto';
+
+type UserRow = Database['public']['Tables']['User']['Row'];
+type UserInsert = Database['public']['Tables']['User']['Insert'];
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('SUPABASE_CLIENT') private supabaseClient: SupabaseClient,
+    @Inject('SUPABASE_CLIENT') private supabase: SupabaseClient<Database>,
   ) {}
 
-  async getAllUsers() {
-    const { data, error } = await this.supabaseClient.from('User').select('*');
-    if (error) throw error;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return data;
+  async getAllUsers(): Promise<UserRow[]> {
+    const { data, error } = await this.supabase.from('User').select('*');
+    if (error) throw new InternalServerErrorException(error.message);
+    return data ?? [];
   }
 
-  async createUser(
-    email: string,
-    name?: string,
-    role: 'USER' | 'ADMIN' = 'USER',
-  ) {
-    const { data, error } = await this.supabaseClient
+  async createUser(dto: CreateUserDto): Promise<UserRow> {
+    const insert: UserInsert = {
+      email: dto.email,
+      name: dto.name,
+      role: dto.role ?? 'USER',
+    };
+    const { data, error } = await this.supabase
       .from('User')
-      .insert([{ email, name, role }])
-      .select();
-    if (error) throw error;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return data[0];
+      .insert([insert])
+      .select('*')
+      .single();
+    if (error) throw new InternalServerErrorException(error.message);
+    return data as UserRow;
   }
 }

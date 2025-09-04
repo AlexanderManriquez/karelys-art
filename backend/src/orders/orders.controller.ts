@@ -1,26 +1,21 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { OrdersService } from './orders.service';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { Database } from 'src/database.types';
 
-@Controller('artworks')
+type OrderRow = Database['public']['Tables']['Order']['Row'];
+
+@Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  async getAll() {
+  async getAll(): Promise<OrderRow[]> {
     return this.ordersService.getAllOrders();
   }
 
   @Post()
-  async create(
-    @Body()
-    body: {
-      userId: string;
-      artworkId: string;
-      status: 'PENDING' | 'COMPLETED' | 'CANCELED';
-    },
-  ) {
-    const { userId, artworkId, status = 'PENDING' } = body;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.ordersService.createOrder(userId, artworkId, status);
+  async create(@Body() dto: CreateOrderDto): Promise<OrderRow> {
+    return this.ordersService.createOrder(dto);
   }
 }

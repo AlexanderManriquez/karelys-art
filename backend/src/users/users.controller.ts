@@ -1,21 +1,21 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { Database } from 'src/database.types';
+
+type UserRow = Database['public']['Tables']['User']['Row'];
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAll() {
+  async getAll(): Promise<UserRow[]> {
     return this.usersService.getAllUsers();
   }
 
   @Post()
-  async create(
-    @Body() body: { email: string; name?: string; role?: 'USER' | 'ADMIN' },
-  ) {
-    const { email, name, role } = body;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.usersService.createUser(email, name, role);
+  async create(@Body() dto: CreateUserDto): Promise<UserRow> {
+    return this.usersService.createUser(dto);
   }
 }

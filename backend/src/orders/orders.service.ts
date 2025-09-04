@@ -1,28 +1,39 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from 'src/database.types';
+import { CreateOrderDto } from './dto/create-order.dto';
+
+type OrderRow = Database['public']['Tables']['Order']['Row'];
+type OrderInsert = Database['public']['Tables']['Order']['Insert'];
 
 @Injectable()
 export class OrdersService {
-  constructor(@Inject('SUPABASE_CLIENT') private supabase: SupabaseClient) {}
+  constructor(
+    @Inject('SUPABASE_CLIENT') private supabase: SupabaseClient<Database>,
+  ) {}
 
-  async getAllOrders() {
+  async getAllOrders(): Promise<OrderRow[]> {
     const { data, error } = await this.supabase.from('Order').select('*');
-    if (error) throw error;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return data;
+    if (error) throw new InternalServerErrorException(error.message);
+    return data ?? [];
   }
 
-  async createOrder(
-    userId: string,
-    artworkId: string,
-    status: 'PENDING' | 'COMPLETED' | 'CANCELED' = 'PENDING',
-  ) {
+  async createOrder(dto: CreateOrderDto): Promise<OrderRow> {
+    const insert: OrderInsert = {
+      userid: dto.userId,
+      artworkid: dto.artworkId,
+      status: dto.status ?? 'PENDING',
+    };
     const { data, error } = await this.supabase
       .from('Order')
-      .insert([{ userId, artworkId, status }])
-      .select();
-    if (error) throw error;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return data[0];
+      .insert([insert])
+      .select('*')
+      .single();
+    if (error) throw new InternalServerErrorException(error.message);
+    return data as OrderRow;
   }
 }
