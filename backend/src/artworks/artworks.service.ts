@@ -4,35 +4,55 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CreateArtworkDto } from './dto/create-artwork.dto';
-import { Artwork } from './entities/artwork.entity';
+import { Database } from 'src/database.types';
+
+// Definimos los tipos directamente desde database.types.ts
+type ArtworkRow = Database['public']['Tables']['Artwork']['Row'];
+type ArtworkInsert = Database['public']['Tables']['Artwork']['Insert'];
+type ArtworkUpdate = Database['public']['Tables']['Artwork']['Update'];
 
 @Injectable()
 export class ArtworksService {
-  constructor(@Inject('SUPABASE_CLIENT') private supabase: SupabaseClient) {}
+  constructor(
+    @Inject('SUPABASE_CLIENT') private supabase: SupabaseClient<Database>,
+  ) {}
 
-  async getAllWorks(): Promise<Artwork[]> {
-    const { data, error } = await this.supabase
-      .from('Artwork')
-      .select<'*', Artwork>('*');
-    if (error) {
-      console.error(error);
-      throw new InternalServerErrorException(error.message);
-    }
-    return data;
+  async getAllWorks(): Promise<ArtworkRow[]> {
+    const { data, error } = await this.supabase.from('Artwork').select('*'); // devuelve ArtworkRow[]
+
+    if (error) throw new InternalServerErrorException(error.message);
+    return data ?? [];
   }
 
-  async createArtwork(createArtworkDto: CreateArtworkDto): Promise<Artwork> {
+  async createArtwork(createArtworkDto: ArtworkInsert): Promise<ArtworkRow> {
     const { data, error } = await this.supabase
       .from('Artwork')
       .insert([createArtworkDto])
-      .select<'*', Artwork>()
+      .select('*')
       .single();
-    if (error) {
-      console.error(error);
-      throw new InternalServerErrorException(error.message);
-    }
 
-    return data;
+    if (error) throw new InternalServerErrorException(error.message);
+    return data as ArtworkRow;
+  }
+
+  async updateArtwork(
+    id: string,
+    updateArtworkDto: ArtworkUpdate,
+  ): Promise<ArtworkRow> {
+    const { data, error } = await this.supabase
+      .from('Artwork')
+      .update(updateArtworkDto)
+      .eq('id', id)
+      .select('*')
+      .single();
+
+    if (error) throw new InternalServerErrorException(error.message);
+    return data as ArtworkRow;
+  }
+
+  async deleteArtwork(id: string): Promise<void> {
+    const { error } = await this.supabase.from('Artwork').delete().eq('id', id);
+
+    if (error) throw new InternalServerErrorException(error.message);
   }
 }
