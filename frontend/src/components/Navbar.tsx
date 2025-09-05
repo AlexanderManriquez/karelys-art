@@ -19,7 +19,7 @@ export default function Navbar() {
                 <Link href="/gallery" className="text-gray-700 hover:text-gray-900 transition-colors">Galería</Link>
                 <Link href="/exposiciones" className="text-gray-700 hover:text-gray-900 transition-colors">Exposiciones</Link>
                 <Link href="/blog" className="text-gray-700 hover:text-gray-900 transition-colors">Blog</Link>
-                <Link href="/contacto" className="text-gray-700 hover:text-gray-900 transition-colors">Contacto</Link>
+                <Link href="/contact" className="text-gray-700 hover:text-gray-900 transition-colors">Contacto</Link>
                 <Button variant="outline" size="sm">Donar</Button>
             </div>
             {/* Botón para abrir el menú móvil */}
@@ -33,10 +33,10 @@ export default function Navbar() {
                 <div className="md:hidden bg-white shadow-lg w-full">
                     <div className="flex flex-col space-y-4 p-4">
                         <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors">Inicio</Link>
-                        <Link href="/galeria" className="text-gray-700 hover:text-gray-900 transition-colors">Galería</Link>
+                        <Link href="/gallery" className="text-gray-700 hover:text-gray-900 transition-colors">Galería</Link>
                         <Link href="/exposiciones" className="text-gray-700 hover:text-gray-900 transition-colors">Exposiciones</Link>
                         <Link href="/blog" className="text-gray-700 hover:text-gray-900 transition-colors">Blog</Link>
-                        <Link href="/contacto" className="text-gray-700 hover:text-gray-900 transition-colors">Contacto</Link>
+                        <Link href="/contact" className="text-gray-700 hover:text-gray-900 transition-colors">Contacto</Link>
                         <Button variant="outline">Donar</Button>
                     </div>
                     

@@ -13,6 +13,6 @@ export const SupabaseProvider = {
       throw new Error('URL & KEY Not Defined in .env');
     }
 
-    return createClient<Database>(supabaseUrl, supabaseKey);ñ
+    return createClient<Database>(supabaseUrl, supabaseKey);
   },
 };
