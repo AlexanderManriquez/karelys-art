@@ -19,3 +19,20 @@ export async function sendContactMessage(dto: CreateContactDto): Promise<Contact
   console.log("API response:", data);
   return data;
 }
+
+export async function getContactMessages(): Promise<ContactRow[]> {
+  const res = await fetch(`${API_URL}/contact`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message || 'Error al obtener los mensajes');
+  }
+
+  return res.json();
+}

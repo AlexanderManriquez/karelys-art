@@ -3,6 +3,10 @@
 import { sendContactMessage } from "@/services/contactService";
 import { CreateContactDto } from "@/types/contact";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
 export function ContactForm() {
   const [form, setForm] = useState<CreateContactDto>({
@@ -12,8 +16,6 @@ export function ContactForm() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,18 +24,16 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setSuccess(null);
     
     try {
       await sendContactMessage(form);
-      setSuccess("¡Mensaje enviado con éxito!");
+      toast.success("Mensaje enviado con éxito.");
       setForm( { name: "", email: "", message: "" });
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message);
+        toast.error(err.message);
       } else {
-        setError("Ocurrió un error inesperado.");
+        toast.error("Ocurrió un error inesperado.");
       }
     } finally {
       setLoading(false);
@@ -41,10 +41,10 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto-6 bg-gray-50 rounded-1xl p-4 space-y-4">
-      <h2 className="text-2xl font-bold">Contáctame</h2>
+    <form onSubmit={handleSubmit} className="w-1/4 mx-auto-6 bg-gray-50 rounded-1xl p-4 space-y-4">
+      <h2 className="text-2xl font-bold text-red-400">Contáctame</h2>
 
-      <input
+      <Input
         type="text"
         name="name"
         value={form.name}
@@ -55,7 +55,7 @@ export function ContactForm() {
         required
       />
 
-      <input
+      <Input
         type="email"
         name="email"
         value={form.email}
@@ -66,7 +66,7 @@ export function ContactForm() {
         required
       />
 
-      <textarea
+      <Textarea
         name="message"
         value={form.message}
         onChange={handleChange}
@@ -75,18 +75,15 @@ export function ContactForm() {
         minLength={10}
         aria-required="true"
         required
-      ></textarea>
+      />
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+        className="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-700 transition"
       >
         {loading ? "Enviando..." : "Enviar Mensaje"}  
-      </button>
-
-      {success && <p className="text-green-600 text-sm">{success}</p>}
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      </Button>
     </form>
   );
 }
