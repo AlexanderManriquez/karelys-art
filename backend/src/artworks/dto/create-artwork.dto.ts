@@ -22,4 +22,8 @@ export class CreateArtworkDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsString()
+  @IsOptional()
+  category?: string;
 }

@@ -55,4 +55,26 @@ export class ArtworksService {
 
     if (error) throw new InternalServerErrorException(error.message);
   }
+
+  async getFilteredWorks(
+    page = 1,
+    limit = 12,
+    category?: string,
+  ): Promise<ArtworkRow[]> {
+    const offset = (page - 1) * limit;
+
+    let query = this.supabase
+      .from('Artwork')
+      .select('*')
+      .range(offset, offset + limit - 1);
+
+    if (category) {
+      query = query.eq('category', category);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw new InternalServerErrorException(error.message);
+    return data ?? [];
+  }
 }
