@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export type Json =
   | string
   | number
@@ -19,7 +20,7 @@ export type Database = {
           createdat: string | null;
           description: string | null;
           highlighted: boolean | null;
-          id: number;
+          id: string;
           imageurl: string;
           price: number;
           title: string;

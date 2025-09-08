@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'src/database.types';
+import { generateUniqueSlug } from 'src/utils/slugify.util';
 
 // Definimos los tipos directamente desde database.types.ts
 type ArtworkRow = Database['public']['Tables']['Artwork']['Row'];
@@ -25,9 +26,14 @@ export class ArtworksService {
   }
 
   async createArtwork(createArtworkDto: ArtworkInsert): Promise<ArtworkRow> {
+    const slug = await generateUniqueSlug(
+      createArtworkDto.title,
+      this.supabase,
+    );
+
     const { data, error } = await this.supabase
       .from('Artwork')
-      .insert([createArtworkDto])
+      .insert([{ ...createArtworkDto, slug }])
       .select('*')
       .single();
 
@@ -76,5 +82,18 @@ export class ArtworksService {
 
     if (error) throw new InternalServerErrorException(error.message);
     return data ?? [];
+  }
+
+  async getArtworkBySlug(slug: string): Promise<ArtworkRow | null> {
+    const { data, error } = await this.supabase
+      .from('Artwork')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      throw new InternalServerErrorException(error.message);
+    }
+    return data ?? null;
   }
 }

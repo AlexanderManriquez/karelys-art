@@ -1,8 +1,9 @@
 "use client";
 
-import { Database } from "@/database.types";
+import { Database } from "../database.types";
 import { Card, CardContent } from "../components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 type ArtworkRow = Database["public"]["Tables"]["Artwork"]["Row"];
 
@@ -18,7 +19,8 @@ export function Gallery({ artworks, limit }: GalleryProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
       {items.map((artwork) => (
-        <Card key={artwork.id} className="rounded-2xl shadow-lg overflow-hidden">
+        <Link href={`/gallery/${artwork.slug}`} key={artwork.id}>
+                  <Card key={artwork.id} className="rounded-2xl shadow-lg overflow-hidden">
           <CardContent className="p-0">
             {artwork.imageurl ? (
               <Image
@@ -41,6 +43,8 @@ export function Gallery({ artworks, limit }: GalleryProps) {
             </div>
           </CardContent>
         </Card>
+        </Link>
+
       ))}
     </div>
   )

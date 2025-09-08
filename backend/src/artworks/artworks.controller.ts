@@ -41,4 +41,9 @@ export class ArtworksController {
     await this.artworksService.deleteArtwork(id);
     return { message: `Artwork ${id} deleted successfully` };
   }
+
+  @Get('slug/:slug')
+  async getBySlug(@Param('slug') slug: string) {
+    return this.artworksService.getArtworkBySlug(slug);
+  }
 }
